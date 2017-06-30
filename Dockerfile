@@ -12,12 +12,28 @@ LABEL io.k8s.description="Platform for building Jekyll-based static sites" \
       io.openshift.tags="jekyll,static"
 
 # Install required packages
-RUN yum install -y epel-release && \
-    yum install -y rh-ruby22 rh-ruby22-ruby-devel rh-ruby22-rubygem-bundler nginx && \
+RUN yum install -y --setopt=tsflags=nodocs centos-release-scl && \
+    yum install -y --setopt=tsflags=nodocs rh-ruby23 \
+                                           rh-ruby23-ruby-devel \
+                                           rh-ruby23-rubygem-bundler \
+                                           rh-nginx18 && \
     yum clean all -y
 
+# Get prefix path and path to scripts rather than hard-code them in scripts
+ENV CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts \
+    ENABLED_COLLECTIONS="rh-nginx18 rh-ruby23"
+
+# When bash is started non-interactively, to run a shell script, for example it
+# looks for this variable and source the content of this file. This will enable
+# the SCL for all scripts without need to do 'scl enable'.
+ENV BASH_ENV=${CONTAINER_SCRIPTS_PATH}/scl_enable \
+    ENV=${CONTAINER_SCRIPTS_PATH}/scl_enable \
+    PROMPT_COMMAND=". ${CONTAINER_SCRIPTS_PATH}/scl_enable"
+
+ADD root /
+
 # Install Jekyll and Bundler with RubyGems
-RUN gem install jekyll bundler
+RUN bash -c "gem install --no-ri --no-rdoc jekyll bundler"
 
 # Copy the S2I scripts to /usr/libexec/s2i, since openshift/base-centos7
 # image sets io.openshift.s2i.scripts-url label that way
@@ -33,8 +49,7 @@ RUN mkdir -p /opt/app-root/etc/nginx && \
 COPY ./etc /opt/app-root/etc
 
 # Link the nginx logs to stdout/stderr
-RUN ln -sf /dev/stdout /var/log/nginx/error.log && \
-    ln -sf /dev/stdout /opt/app-root/var/log/nginx/access.log && \
+RUN ln -sf /dev/stdout /opt/app-root/var/log/nginx/access.log && \
     ln -sf /dev/stderr /opt/app-root/var/log/nginx/error.log
 
 # Chown /opt/app-root to the deployment user and drop privileges
