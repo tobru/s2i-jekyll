@@ -30,9 +30,9 @@ if [ -d /tmp/artifacts/ ]; then
   echo "Restoring site to /opt/app-root/src/"
   mv /tmp/artifacts/opt/app-root/src/* /opt/app-root/src/
 
-  if [ -f /tmp/gems.tgz ]; then
+  if [ -f /tmp/artifacts/tmp/gems.tgz ]; then
     echo "Restoring gems"
-    tar xvzf /tmp/gems.tgz -C /
+    tar xvzf /tmp/artifacts/tmp/gems.tgz -C /
   fi
 
   echo "Finished restoring artifacts"
