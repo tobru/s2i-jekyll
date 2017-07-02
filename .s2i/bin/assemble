@@ -35,3 +35,8 @@ else
     jekyll build --destination ${DESTINATION}
 fi
 
+if [ -f "_nginx.conf" ]; then
+    echo "---> Installing custom nginx configuration"
+    cp _nginx.conf /opt/app-root/etc/nginx.include.d/jekyll.conf
+fi
+
