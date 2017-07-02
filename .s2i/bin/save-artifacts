@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+pushd ${HOME} >/dev/null
+
+if [ -d ./_lychee_cache ]; then
+    tar cf - ./_lychee_cache ./_site
+else
+    tar cf - ./_site
+fi
+
+popd >/dev/null
+

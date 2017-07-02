@@ -8,35 +8,43 @@
 #
 
 if [[ "$1" == "-h" ]]; then
-	# If the 'jekyll-centos7' assemble script is executed with '-h' flag,
-	# print the usage.
-	exec /usr/libexec/s2i/usage
+  # If the 'jekyll-centos7' assemble script is executed with '-h' flag,
+  # print the usage.
+  exec /usr/libexec/s2i/usage
+fi
+
+# restore build artifacts
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+  mv /tmp/artifacts/* $HOME/.
+  echo "Restored artifacts"
+else
+  echo "No previous artifacts found"
 fi
 
 DESTINATION=$(pwd)
 cd /tmp/src
 
 if [ -f "Gemfile" ]; then
-    echo "---> Installing dependencies with Bundler..."
+  echo "---> Installing dependencies with Bundler..."
 
-    if ! grep -Fq "json" Gemfile; then
-        # Add json to Gemfile
-        # Workaround for issue where json isn't installed
-        echo "gem 'json'" >> Gemfile
-    fi
+  if ! grep -Fq "json" Gemfile; then
+      # Add json to Gemfile
+      # Workaround for issue where json isn't installed
+      echo "gem 'json'" >> Gemfile
+  fi
 
-    # Run Bundler
-    bundle install
+  # Run Bundler
+  bundle install
 
-    echo "---> Building site with Jekyll..."
-    bundle exec jekyll build --destination ${DESTINATION}
+  echo "---> Building site with Jekyll..."
+  bundle exec jekyll build --destination ${DESTINATION}
 else
-    echo "---> Building site with Jekyll..."
-    jekyll build --destination ${DESTINATION}
+  echo "---> Building site with Jekyll..."
+  jekyll build --incremental --destination ${DESTINATION}
 fi
 
 if [ -f "_nginx.conf" ]; then
-    echo "---> Installing custom nginx configuration"
-    cp _nginx.conf /opt/app-root/etc/nginx.include.d/jekyll.conf
+  echo "---> Installing custom nginx configuration"
+  cp _nginx.conf /opt/app-root/etc/nginx.include.d/jekyll.conf
 fi
 
