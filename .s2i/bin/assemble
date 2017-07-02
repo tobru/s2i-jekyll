@@ -36,7 +36,6 @@ if [ -d /tmp/artifacts/ ]; then
   fi
 
   echo "Finished restoring artifacts"
-  find /opt/app-root
 else
   echo "No previous artifacts found"
 fi
@@ -66,7 +65,6 @@ else
 fi
 
 find /tmp
-find /opt/app-root
 
 if [ -f "_nginx.conf" ]; then
   echo "---> Installing custom nginx configuration"
