@@ -2,10 +2,10 @@
 
 pushd ${HOME} >/dev/null
 
-if [ -d ./_lychee_cache ]; then
-    tar cf - ./_lychee_cache ./_site
+if [ -f "_cachedirs" ]; then
+  tar cf - $(cat _cachedirs | tr '\n' ' ') /opt/app-root/src
 else
-    tar cf - ./_site
+  tar cf - /opt/app-root/src
 fi
 
 popd >/dev/null

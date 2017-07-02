@@ -16,8 +16,13 @@ fi
 # restore build artifacts
 find /tmp
 if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
-  mv /tmp/artifacts/* $HOME/.
-  echo "Restored artifacts"
+  for cachedir in $(cat /tmp/src/_cachedirs); do
+    echo "Restoring $cachedir to $HOME/"
+    mv /tmp/artifacts/"${cachedir}" $HOME/
+  done
+  echo "Restoring site to /opt/app-root/src/"
+  mv /tmp/artifacts/* /opt/app-root/src/
+  echo "Finished restoring artifacts"
 else
   echo "No previous artifacts found"
 fi
@@ -36,9 +41,7 @@ if [ -f "Gemfile" ]; then
 
   # Run Bundler
   bundle install
-
-  pwd
-  find .
+  bundle info jekyll-admin
 
   echo "---> Building site with Jekyll..."
   bundle exec jekyll build --destination ${DESTINATION}
