@@ -16,6 +16,7 @@ fi
 # restore build artifacts
 find /tmp/artifacts
 if [ -d /tmp/artifacts/ ]; then
+
   if [ -f /tmp/src/_cachedirs ]; then
     echo "Restoring directories specified in _cachedirs"
     for cachedir in $(cat /tmp/src/_cachedirs); do
@@ -25,10 +26,15 @@ if [ -d /tmp/artifacts/ ]; then
       fi
     done
   fi
+
   echo "Restoring site to /opt/app-root/src/"
   mv /tmp/artifacts/opt/app-root/src/* /opt/app-root/src/
-  echo "Restoring gems"
-  tar xvzf /tmp/gems.tgz -C /
+
+  if [ -f /tmp/gems.tgz ]; then
+    echo "Restoring gems"
+    tar xvzf /tmp/gems.tgz -C /
+  fi
+
   echo "Finished restoring artifacts"
   find /opt/app-root
 else
