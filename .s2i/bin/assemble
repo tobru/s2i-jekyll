@@ -31,7 +31,7 @@ if [ -d /tmp/artifacts/ ]; then
 
   if [ -f /tmp/artifacts/tmp/gems.tgz ]; then
     echo "Restoring gems"
-    tar xvzf /tmp/artifacts/tmp/gems.tgz -C /
+    tar xzf /tmp/artifacts/tmp/gems.tgz -C /
   fi
 
   echo "Finished restoring artifacts"
