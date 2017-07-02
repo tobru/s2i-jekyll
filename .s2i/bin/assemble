@@ -14,7 +14,7 @@ if [[ "$1" == "-h" ]]; then
 fi
 
 # restore build artifacts
-find /tmp
+find /tmp/artifacts
 if [ -d /tmp/artifacts/ ]; then
   if [ -f /tmp/src/_cachedirs ]; then
     echo "Restoring directories specified in _cachedirs"
@@ -47,7 +47,7 @@ if [ -f "Gemfile" ]; then
 
   # Run Bundler
   bundle install
-  bundle info jekyll-admin
+  find /opt/app-root/src
 
   echo "---> Building site with Jekyll..."
   bundle exec jekyll build --destination ${DESTINATION}
@@ -56,6 +56,7 @@ else
   jekyll build --incremental --destination ${DESTINATION}
 fi
 
+find /tmp
 find /opt/app-root
 
 if [ -f "_nginx.conf" ]; then
