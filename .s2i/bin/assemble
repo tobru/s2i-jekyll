@@ -14,8 +14,7 @@ if [[ "$1" == "-h" ]]; then
 fi
 
 # restore build artifacts
-ls /tmp
-ls /tmp/artifacts
+find /tmp
 if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
   mv /tmp/artifacts/* $HOME/.
   echo "Restored artifacts"
@@ -38,7 +37,8 @@ if [ -f "Gemfile" ]; then
   # Run Bundler
   bundle install
 
-  ls -Alh
+  pwd
+  find .
 
   echo "---> Building site with Jekyll..."
   bundle exec jekyll build --destination ${DESTINATION}
