@@ -3,7 +3,7 @@
 pushd ${HOME} >/dev/null
 
 if [ -f "_cachedirs" ]; then
-  tar cf - $(cat _cachedirs | tr '\n' ' ') /opt/app-root/src
+  tar cf - $(cat _cachedirs | tr '\n' ' ') /tmp/gems.tgz /opt/app-root/src
 else
   tar cf - /opt/app-root/src
 fi

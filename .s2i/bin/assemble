@@ -21,12 +21,14 @@ if [ -d /tmp/artifacts/ ]; then
     for cachedir in $(cat /tmp/src/_cachedirs); do
       if [ -d /tmp/artifacts/"${cachedir}" ]; then
         echo "  Restoring $cachedir to $HOME/"
-        mv /tmp/artifacts/"${cachedir}" $HOME/
+        mv /tmp/artifacts/"${cachedir}" ${cachedir}
       fi
     done
   fi
   echo "Restoring site to /opt/app-root/src/"
   mv /tmp/artifacts/opt/app-root/src/* /opt/app-root/src/
+  echo "Restoring gems"
+  tar xvzf /tmp/gems.tgz -C /
   echo "Finished restoring artifacts"
   find /opt/app-root
 else
@@ -47,10 +49,11 @@ if [ -f "Gemfile" ]; then
 
   # Run Bundler
   bundle install
-  find /opt/app-root/src
+  # backup .gem for later retrieval
+  tar czf /tmp/gems.tgz /opt/app-root/src/.gem
 
   echo "---> Building site with Jekyll..."
-  bundle exec jekyll build --destination ${DESTINATION}
+  bundle exec jekyll build --incremental --destination ${DESTINATION}
 else
   echo "---> Building site with Jekyll..."
   jekyll build --incremental --destination ${DESTINATION}
