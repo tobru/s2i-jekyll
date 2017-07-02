@@ -41,6 +41,7 @@ COPY ./.s2i/bin/ /usr/libexec/s2i
 
 # Create directories for nginx
 RUN mkdir -p /opt/app-root/etc/nginx && \
+    mkdir -p /opt/app-root/etc/nginx.include.d && \
     mkdir -p /opt/app-root/var/run/nginx && \
     mkdir -p /opt/app-root/var/log/nginx && \
     mkdir -p /opt/app-root/var/lib/nginx/tmp
