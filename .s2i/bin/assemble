@@ -14,7 +14,6 @@ if [[ "$1" == "-h" ]]; then
 fi
 
 # restore build artifacts
-find /tmp/artifacts
 if [ -d /tmp/artifacts/ ]; then
 
   if [ -f /tmp/src/_cachedirs ]; then
@@ -63,8 +62,6 @@ else
   echo "---> Building site with Jekyll..."
   jekyll build --incremental --destination ${DESTINATION}
 fi
-
-find /tmp
 
 if [ -f "_nginx.conf" ]; then
   echo "---> Installing custom nginx configuration"
