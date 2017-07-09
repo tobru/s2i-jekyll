@@ -2,18 +2,20 @@
 
 This repository contains the source for building Jekyll sites as reproducible Docker images using source-to-image. The resulting image can be run using Docker.
 
+It is based on the work here: https://github.com/ComputerScienceHouse/s2i-jekyll.
+
 ## Installation
 
 This image is available on DockerHub. To pull it, run:
 
 ```
-docker pull computersciencehouse/jekyll-centos7
+docker pull tobru/s2i-jekyll
 ```
 
 To build the image from scratch, run:
 
 ```
-git clone https://github.com/ComputerScienceHouse/s2i-jekyll.git
+git clone https://github.com/tobru/s2i-jekyll.git
 cd s2i-jekyll
 make build
 ```
@@ -23,7 +25,7 @@ make build
 To build a Jekyll site using standalone S2I and then run the resulting image with Docker, execute:
 
 ```
-s2i build [path to your app/git clone url] computersciencehouse/jekyll-centos7 my-jekyll-site
+s2i build [path to your app/git clone url] tobru/s2i-jekyll my-jekyll-site
 docker run -p 8080:8080 my-jekyll-site
 ```
 
