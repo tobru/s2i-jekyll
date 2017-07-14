@@ -44,7 +44,8 @@ RUN mkdir -p /opt/app-root/etc/nginx && \
     mkdir -p /opt/app-root/etc/nginx.include.d && \
     mkdir -p /opt/app-root/var/run/nginx && \
     mkdir -p /opt/app-root/var/log/nginx && \
-    mkdir -p /opt/app-root/var/lib/nginx/tmp
+    mkdir -p /opt/app-root/var/lib/nginx/tmp && \
+    chown -R 1001:0 /var/opt/rh/rh-nginx18/log
 
 # Copy the nginx configuration
 COPY ./etc /opt/app-root/etc
